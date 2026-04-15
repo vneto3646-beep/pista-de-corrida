@@ -25,10 +25,17 @@ def Registro_Cliente(self):
     obj3 = Cliente("Vicente Neto Fernandes Menezes", "vicente@gmail.com")
 
 class Veiculo:
-    def __init__ (self, tipo, placa, cor):
+    def __init__ (self, tipo, placa, cor, tanque, rendimento, odometro, desenho):
         self.tipo = tipo
         self.placa = placa
         self.cor = cor
+        self.tanque = tanque
+        self.rendimento = rendimento
+        self.odometro = 0
+        self.desenho = desenho
+    def andar(self):
+        self.odometro += self.rendimento    
+        self.tanque -= 1 # self.tanque = self.tanque - 1
 
 def Registro_Veiculo(self):
     obj1 = Veiculo("carro", "bra2e19", "vermelho")
@@ -116,3 +123,35 @@ def Registro_OrdemServico(self):
     obj1 = OrdemServico(date(2026, 08, 04), "bra2e19", date(2026, 10, 04), "Jamille Cristiny Kurek Ferreira", 0)
     obj2 = OrdemServico(date(2026, 01, 19), "hda5q94", date(2026, 01, 21), "Manuella Sperotto", 0)
     obj3 = OrdemServico(date(2026, 04, 22), "plq0j13", date(2026, 04, 23), "Vicente Neto Fernandes Menezes", 0)
+
+class Pista:
+    def __init__(self, extensao, veiculos):
+        self.extensao = extensao
+        self.veiculos = []
+
+    def tick(self):
+        for v in self.veiculos:
+            if v.odometro <= self.extensao:
+                v.andar() # anda, veículo :-)
+
+    def pista_grafica(self):
+        for v in self.veiculos:
+            s = "." * int(v.odometro/10)
+            print(v.modelo,"(",v.odometro,"):",s,v.desenho)            
+
+fox = Veiculo("Fox", 42, 12, "o~W~o")
+biz = Veiculo("Honda Biz", 5, 40, "o-o")
+
+indianapolis = Pista (500)
+indianapolis.veiculos.append(fox)
+indianapolis.veiculos.append(biz)
+while True:
+    indianapolis.tick() 
+    #print(indianapolis.veiculos[0].modelo, "andou", indianapolis.veiculos[0].odometro)
+    #print(indianapolis.veiculos[1].modelo, "andou", indianapolis.veiculos[1].odometro)
+    indianapolis.pista_grafica()
+    
+    time.sleep(1)
+
+    if indianapolis.veiculos[0].odometro >= 500 and indianapolis.veiculos[1].odometro >= 500:
+        break 
